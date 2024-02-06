@@ -6,12 +6,20 @@ import {
   Label,
   FieldError,
 } from '@redwoodjs/forms'
-import { Link, routes } from '@redwoodjs/router'
-import { Metadata } from '@redwoodjs/web'
+import { useMutation } from '@redwoodjs/web'
+
+const CREATE_MUTATION = gql`
+  mutation CreateContactMutation($input: CreateContactInput!) {
+    CreateContact(input: $input) {
+      id
+    }
+  }
+`
 
 const ContactPage = () => {
+  const [create] = useMutation(CREATE_MUTATION)
   const onSubmit = (data) => {
-    console.log(data)
+    create({ variables: { input: { data } } })
   }
   return (
     <Form onSubmit={onSubmit} validation={{ mode: 'onBlur' }}>
